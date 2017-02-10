@@ -25,6 +25,11 @@ public class WebLog implements Serializable {
   String Time;
   String Request;
   double Bytes;
+  String Log;
+
+  public String getLog() {
+    return this.Log;
+  }
 
   public String getLogType() {
     return this.LogType;

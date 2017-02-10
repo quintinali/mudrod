@@ -160,22 +160,22 @@ public class MudrodEngine {
   public void startFullIngest() {
     DiscoveryEngineAbstract wd = new WeblogDiscoveryEngine(props, es, spark);
     wd.preprocess();
-    wd.process();
-
+    /* wd.process();
+    
     DiscoveryEngineAbstract od = new OntologyDiscoveryEngine(props, es, spark);
     od.preprocess();
     od.process();
-
+    
     DiscoveryEngineAbstract md = new MetadataDiscoveryEngine(props, es, spark);
     md.preprocess();
     md.process();
-
+    
     LinkageIntegration li = new LinkageIntegration(props, es, spark);
     li.execute();
-
+    
     DiscoveryEngineAbstract recom = new RecommendEngine(props, es, spark);
     recom.preprocess();
-    recom.process();
+    recom.process();*/
   }
 
   /**

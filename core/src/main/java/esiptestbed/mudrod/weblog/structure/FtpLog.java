@@ -48,6 +48,7 @@ public class FtpLog extends WebLog implements Serializable {
       ftplog.IP = ip;
       ftplog.Request = request;
       ftplog.Bytes = Double.parseDouble(bytes);
+      ftplog.Log = log;
 
       SimpleDateFormat df = new SimpleDateFormat(
           "yyyy-MM-dd'T'HH:mm:ss.sss'Z'");

@@ -13,6 +13,9 @@
  */
 package esiptestbed.mudrod.weblog.pre;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +29,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -101,8 +105,9 @@ public class CrawlerDetection extends LogAbstract {
     LOG.info("Starting Crawler detection {}.", httpType);
     startTime = System.currentTimeMillis();
     try {
-      checkByRate();
-    } catch (InterruptedException | IOException e) {
+      // checkByRate();
+      saveCleanLog();
+    } catch (Exception e) {
       LOG.error("Encountered an error whilst detecting Web crawlers.", e);
     }
     endTime = System.currentTimeMillis();
@@ -110,6 +115,65 @@ public class CrawlerDetection extends LogAbstract {
     LOG.info("Crawler detection complete. Time elapsed {} seconds",
         (endTime - startTime) / 1000);
     return null;
+  }
+
+  private void saveCleanLog() throws IOException {
+
+    String httpfileName = "E://http";
+    File httpfile = new File(httpfileName);
+    if (!httpfile.exists()) {
+      httpfile.createNewFile();
+    }
+    FileWriter httpfw = new FileWriter(httpfile.getAbsoluteFile());
+    BufferedWriter httpbw = new BufferedWriter(httpfw);
+
+    String ftpfileName = "E://ftp";
+    File ftpfile = new File(ftpfileName);
+    if (!ftpfile.exists()) {
+      ftpfile.createNewFile();
+    }
+    FileWriter ftpfw = new FileWriter(ftpfile.getAbsoluteFile());
+    BufferedWriter ftpbw = new BufferedWriter(ftpfw);
+
+    SearchRequestBuilder scrollBuilder = es.getClient()
+        .prepareSearch(this.logIndex).setTypes(this.cleanupType)
+        .setScroll(new TimeValue(60000)).setQuery(QueryBuilders.matchAllQuery())
+        .setSize(100);
+
+    // System.out.println(props.getProperty("indexName"));
+    // System.out.println(this.cleanupType);
+    // System.out.println(scrollBuilder.toString());
+
+    SearchResponse scrollResp = scrollBuilder.execute().actionGet();
+
+    while (true) {
+      for (SearchHit hit : scrollResp.getHits().getHits()) {
+        Map<String, Object> result = hit.getSource();
+        String logType = (String) result.get("LogType");
+        String log = (String) result.get("Log");
+
+        System.out.println(logType);
+
+        if (log != null) {
+          if (logType.equals("PO.DAAC")) {
+            httpbw.write(log + " \n");
+          } else {
+            ftpbw.write(log + " \n");
+          }
+        }
+
+        // System.out.println(result.get("Log"));
+      }
+
+      scrollResp = es.getClient().prepareSearchScroll(scrollResp.getScrollId())
+          .setScroll(new TimeValue(600000)).execute().actionGet();
+      if (scrollResp.getHits().getHits().length == 0) {
+        break;
+      }
+    }
+
+    httpbw.close();
+    ftpbw.close();
   }
 
   /**

@@ -31,9 +31,7 @@ import org.slf4j.LoggerFactory;
 import esiptestbed.mudrod.driver.ESDriver;
 import esiptestbed.mudrod.driver.SparkDriver;
 import esiptestbed.mudrod.main.MudrodConstants;
-import esiptestbed.mudrod.weblog.pre.ClickStreamGenerator;
 import esiptestbed.mudrod.weblog.pre.CrawlerDetection;
-import esiptestbed.mudrod.weblog.pre.HistoryGenerator;
 import esiptestbed.mudrod.weblog.pre.ImportLogFile;
 import esiptestbed.mudrod.weblog.pre.RemoveRawLog;
 import esiptestbed.mudrod.weblog.pre.SessionGenerator;
@@ -124,25 +122,25 @@ public class WeblogDiscoveryEngine extends DiscoveryEngineAbstract {
       startTime = System.currentTimeMillis();
       LOG.info("Processing logs dated {}", inputList.get(i));
 
-      DiscoveryStepAbstract im = new ImportLogFile(this.props, this.es,
+      /* DiscoveryStepAbstract im = new ImportLogFile(this.props, this.es,
           this.spark);
-      im.execute();
+      im.execute();*/
 
       DiscoveryStepAbstract cd = new CrawlerDetection(this.props, this.es,
           this.spark);
       cd.execute();
 
-      DiscoveryStepAbstract sg = new SessionGenerator(this.props, this.es,
+      /* DiscoveryStepAbstract sg = new SessionGenerator(this.props, this.es,
           this.spark);
       sg.execute();
-
+      
       DiscoveryStepAbstract ss = new SessionStatistic(this.props, this.es,
           this.spark);
       ss.execute();
-
+      
       DiscoveryStepAbstract rr = new RemoveRawLog(this.props, this.es,
           this.spark);
-      rr.execute();
+      rr.execute();*/
 
       endTime = System.currentTimeMillis();
 
@@ -151,13 +149,13 @@ public class WeblogDiscoveryEngine extends DiscoveryEngineAbstract {
           inputList.get(i), (endTime - startTime) / 1000);
     }
 
-    DiscoveryStepAbstract hg = new HistoryGenerator(this.props, this.es,
+    /*DiscoveryStepAbstract hg = new HistoryGenerator(this.props, this.es,
         this.spark);
     hg.execute();
-
+    
     DiscoveryStepAbstract cg = new ClickStreamGenerator(this.props, this.es,
         this.spark);
-    cg.execute();
+    cg.execute();*/
 
     LOG.info("Web log preprocessing (user history and clickstream) complete.");
   }

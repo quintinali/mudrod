@@ -112,6 +112,7 @@ public class ApacheAccessLog extends WebLog implements Serializable {
         SimpleDateFormat df = new SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         accesslog.Time = df.format(date);
+        accesslog.Log = log;
 
         Gson gson = new Gson();
         lineJson = gson.toJson(accesslog);
