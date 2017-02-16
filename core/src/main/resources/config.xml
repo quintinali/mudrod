@@ -62,5 +62,7 @@
   <para name="metadataCodeSimType">MetadataCodeSim</para>
   <para name="metadataSessionBasedSimType">MetadataSBSim</para>
   <para name="metadataTopicSimType">MetadataTBSim</para>
+  
+  <para name="checkKnownCrawler">0</para>
 
 </Config>

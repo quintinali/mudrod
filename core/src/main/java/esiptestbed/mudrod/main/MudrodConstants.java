@@ -14,10 +14,9 @@
 package esiptestbed.mudrod.main;
 
 /**
- * Class contains static constant keys and values relating
- * to Mudrod configuration properties.
- * Property values are read from 
- * <a href="https://github.com/mudrod/mudrod/blob/master/core/src/main/resources/config.xml">config.xml</a>
+ * Class contains static constant keys and values relating to Mudrod
+ * configuration properties. Property values are read from <a href=
+ * "https://github.com/mudrod/mudrod/blob/master/core/src/main/resources/config.xml">config.xml</a>
  */
 public interface MudrodConstants {
 
@@ -87,5 +86,6 @@ public interface MudrodConstants {
 
   public static final String ONTOLOGY_W = "ontology_w";
 
+  public static final String CHECK_KNOWN_CRAWLER = "checkKnownCrawler";
 
 }
