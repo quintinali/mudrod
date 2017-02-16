@@ -70,6 +70,7 @@ public class TFIDFGenerator extends DiscoveryStepAbstract {
 
     }
 
+    endTime = System.currentTimeMillis();
     LOG.info(
         "*****************Dataset TF_IDF Matrix Generator ends******************Took {}s",
         (endTime - startTime) / 1000);
