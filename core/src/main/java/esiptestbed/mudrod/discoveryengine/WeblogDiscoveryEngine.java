@@ -124,9 +124,9 @@ public class WeblogDiscoveryEngine extends DiscoveryEngineAbstract {
           this.spark);
       ss.execute();
 
-      DiscoveryStepAbstract rr = new RemoveRawLog(this.props, this.es,
+      /* DiscoveryStepAbstract rr = new RemoveRawLog(this.props, this.es,
           this.spark);
-      rr.execute();
+      rr.execute();*/
 
       endTime = System.currentTimeMillis();
 
