@@ -213,6 +213,7 @@ public class ImportLogFile extends DiscoveryStepAbstract {
    *          {@link esiptestbed.mudrod.discoveryengine.MudrodAbstract#httpType}
    */
   public void parseSingleLineFTP(String log, String index, String type) {
+    log = log.trim();
     String ip = log.split(" +")[6];
 
     String time = log.split(" +")[1] + ":" + log.split(" +")[2] + ":"
@@ -261,6 +262,7 @@ public class ImportLogFile extends DiscoveryStepAbstract {
    *          {@link esiptestbed.mudrod.discoveryengine.MudrodAbstract#httpType}
    */
   public void parseSingleLineHTTP(String log, String index, String type) {
+    log = log.trim();
     matcher = p.matcher(log);
     if (!matcher.matches() || NUM_FIELDS != matcher.groupCount()) {
       return;
