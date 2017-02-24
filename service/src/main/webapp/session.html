@@ -92,7 +92,9 @@ $(document).ready(function(){
 function success(data) {
 	var treeData = [];
 	treeData.push(data.treeData);
+	console.log("session tree:" + JSON.stringify(treeData));
 	var requestList = data.RequestList;
+	console.log("request list:" + JSON.stringify(requestList));
 	generateTree(treeData);
 	$('#requestTable').bootstrapTable('load', requestList);
 }
