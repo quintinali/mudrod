@@ -117,19 +117,19 @@ public class WeblogDiscoveryEngine extends DiscoveryEngineAbstract {
       DiscoveryStepAbstract ss = new SessionStatistic(this.props, this.es, this.spark);
       ss.execute();
 
-      DiscoveryStepAbstract rr = new RemoveRawLog(this.props, this.es, this.spark);
-      rr.execute();
+      //DiscoveryStepAbstract rr = new RemoveRawLog(this.props, this.es, this.spark);
+      //rr.execute();
 
       endTime = System.currentTimeMillis();
 
       LOG.info("Web log preprocessing for logs dated {} complete. Time elapsed {} seconds.", inputList.get(i), (endTime - startTime) / 1000);
     }
 
-    DiscoveryStepAbstract hg = new HistoryGenerator(this.props, this.es, this.spark);
+    /*DiscoveryStepAbstract hg = new HistoryGenerator(this.props, this.es, this.spark);
     hg.execute();
 
     DiscoveryStepAbstract cg = new ClickStreamGenerator(this.props, this.es, this.spark);
-    cg.execute();
+    cg.execute();*/
 
     LOG.info("Web log preprocessing (user history and clickstream) complete.");
   }

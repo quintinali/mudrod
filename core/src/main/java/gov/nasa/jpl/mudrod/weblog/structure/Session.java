@@ -284,4 +284,36 @@ public class Session /*extends MudrodAbstract*/ implements Comparable<Session> {
 
     return trainData;
   }
+  
+  /**
+   * getClickStreamList: Extracted ranking training data from current session.
+   *
+   * @param indexName    an index from which to obtain ranked training data.
+   * @param cleanuptype: Session type name in Elasticsearch
+   * @param sessionID:   Session ID
+   * @return Click stram data list
+   * {@link ClickStream}
+   */
+  public List<RecomTrainData> getRecomTrainData(String indexName, String cleanuptype, String sessionID) {
+    SessionTree tree = null;
+    try {
+      tree = this.getSessionTree(indexName, cleanuptype, sessionID);
+      
+      //JsonObject jsonTree = tree.treeToJson(tree.root);
+      //System.out.println(sessionID);
+      //System.out.println(jsonTree.toString());
+      
+    } catch (UnsupportedEncodingException e) {
+      LOG.error("Error whilst retreiving Session Tree: {}", e);
+    }
+
+    List<RecomTrainData> trainData = new ArrayList<>();
+    try {
+      trainData = tree.getRecomTrainData(indexName, sessionID);
+    } catch (UnsupportedEncodingException e) {
+      LOG.error("Error whilst retreiving ranking training data: {}", e);
+    }
+
+    return trainData;
+  }
 }

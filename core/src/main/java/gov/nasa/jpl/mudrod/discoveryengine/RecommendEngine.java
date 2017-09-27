@@ -9,6 +9,8 @@ import gov.nasa.jpl.mudrod.recommendation.pre.SessionCooccurence;
 import gov.nasa.jpl.mudrod.recommendation.process.AbstractBasedSimilarity;
 import gov.nasa.jpl.mudrod.recommendation.process.VariableBasedSimilarity;
 import gov.nasa.jpl.mudrod.recommendation.process.sessionBasedCF;
+import gov.nasa.jpl.mudrod.weblog.pre.RecomTrainDataGenerator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,10 @@ public class RecommendEngine extends DiscoveryEngineAbstract {
 
     startTime = System.currentTimeMillis();
 
-    DiscoveryStepAbstract harvester = new ImportMetadata(this.props, this.es, this.spark);
+    RecomTrainDataGenerator genTrainData = new RecomTrainDataGenerator(this.props, this.es, this.spark);
+    genTrainData.execute();
+    
+    /*DiscoveryStepAbstract harvester = new ImportMetadata(this.props, this.es, this.spark);
     harvester.execute();
 
     DiscoveryStepAbstract tfidf = new MetadataTFIDFGenerator(this.props, this.es, this.spark);
@@ -40,7 +45,7 @@ public class RecommendEngine extends DiscoveryEngineAbstract {
     sessionMatrixGen.execute();
 
     DiscoveryStepAbstract transformer = new NormalizeVariables(this.props, this.es, this.spark);
-    transformer.execute();
+    transformer.execute();*/
 
     endTime = System.currentTimeMillis();
 

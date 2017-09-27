@@ -50,5 +50,4 @@ public class RankingTrainDataGenerator extends DiscoveryStepAbstract {
     // TODO Auto-generated method stub
     return null;
   }
-
 }

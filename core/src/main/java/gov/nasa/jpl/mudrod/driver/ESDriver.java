@@ -191,7 +191,6 @@ public class ESDriver implements Serializable {
       if (scrollResp.getHits().getHits().length == 0) {
         break;
       }
-
     }
     destroyBulkProcessor();
   }

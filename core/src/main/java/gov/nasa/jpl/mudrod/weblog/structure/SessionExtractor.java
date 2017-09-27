@@ -248,7 +248,7 @@ public class SessionExtractor implements Serializable {
    *          a log index name
    * @return list of session names
    */
-  protected List<String> getSessions(Properties props, ESDriver es, String logIndex) {
+  public List<String> getSessions(Properties props, ESDriver es, String logIndex) {
 
     String cleanupPrefix = props.getProperty(MudrodConstants.CLEANUP_TYPE_PREFIX);
     String sessionStatPrefix = props.getProperty(MudrodConstants.SESSION_STATS_PREFIX);
@@ -528,5 +528,58 @@ public class SessionExtractor implements Serializable {
 
     return clickStreamRDD;
   }
+  
+  /**
+   * extractClickStreamFromES:Extract click streams from logs stored in
+   * Elasticsearch
+   *
+   * @param props
+   *          the Mudrod configuration
+   * @param es
+   *          the Elasticsearch drive
+   * @param spark
+   *          the spark driver
+   * @return clickstream list in JavaRDD format {@link ClickStream}
+   */
+  public JavaRDD<RecomTrainData> extractRecomTrainData(Properties props, ESDriver es, SparkDriver spark) {
 
+    List<RecomTrainData> queryList = this.extractRecomTrainData(props, es);
+    return spark.sc.parallelize(queryList);
+
+  }
+
+  /**
+   * getClickStreamList:Extract click streams from logs stored in Elasticsearch.
+   *
+   * @param props
+   *          the Mudrod configuration
+   * @param es
+   *          the Elasticsearch driver
+   * @return clickstream list {@link ClickStream}
+   */
+  protected List<RecomTrainData> extractRecomTrainData(Properties props, ESDriver es) {
+    List<String> logIndexList = es.getIndexListWithPrefix(props.getProperty(MudrodConstants.LOG_INDEX));
+
+    LOG.info(logIndexList.toString());
+
+    List<RecomTrainData> result = new ArrayList<>();
+    for (int n = 0; n < logIndexList.size(); n++) {
+      String logIndex = logIndexList.get(n);
+      List<String> sessionIdList;
+      try {
+        sessionIdList = this.getSessions(props, es, logIndex);
+        Session session = new Session(props, es);
+        int sessionNum = sessionIdList.size();
+        for (int i = 0; i < sessionNum; i++) {
+          String[] sArr = sessionIdList.get(i).split(",");
+          List<RecomTrainData> datas = session.getRecomTrainData(sArr[1], sArr[2], sArr[0]);
+          result.addAll(datas);
+        }
+      } catch (Exception e) {
+        LOG.error("Error which extracting ranking train data: {}", e);
+      }
+    }
+
+    return result;
+  }
 }
