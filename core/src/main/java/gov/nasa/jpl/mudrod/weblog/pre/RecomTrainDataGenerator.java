@@ -33,7 +33,8 @@ public class RecomTrainDataGenerator extends DiscoveryStepAbstract {
     LOG.info("Starting generate recommendation train data.");
     startTime = System.currentTimeMillis();
 
-    String recomTrainFile = "E:\\data\\mudrod\\traing.txt";
+    //String recomTrainFile = "E:\\data\\mudrod\\traing.txt";
+    String recomTrainFile = props.getProperty("recommendation_dl_train_data");
     try {
       SessionExtractor extractor = new SessionExtractor();
       JavaRDD<RecomTrainData> rankingTrainDataRDD = extractor.extractRecomTrainData(this.props, this.es, this.spark);
@@ -43,7 +44,7 @@ public class RecomTrainDataGenerator extends DiscoveryStepAbstract {
       JavaRDD<String> tmpRDD = rankingTrainData_JsonRDD.coalesce(1);
       
       System.out.print(tmpRDD.count());
-      tmpRDD.saveAsTextFile(recomTrainFile);
+      tmpRDD.coalesce(1).saveAsTextFile(recomTrainFile);
       
       
       /*List<String> test = rankingTrainData_JsonRDD.collect();

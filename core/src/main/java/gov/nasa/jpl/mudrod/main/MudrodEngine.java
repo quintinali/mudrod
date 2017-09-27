@@ -433,6 +433,8 @@ public class MudrodEngine {
     me.props.put("metadataOBCode", dataDir + "MetadataOHCode");
     me.props.put("metadata_topic", dataDir + "metadata_topic");
     me.props.put("metadata_topic_matrix", dataDir + "metadata_topic_matrix.csv");
+    
+    me.props.put("recommendation_dl_train_data", dataDir + "recommendation_dl_train_data.txt");
   }
 
   /**
