@@ -44,7 +44,7 @@ public class RecomTrainDataGenerator extends DiscoveryStepAbstract {
       JavaRDD<String> tmpRDD = rankingTrainData_JsonRDD.coalesce(1);
       
       System.out.print(tmpRDD.count());
-      tmpRDD.coalesce(1).saveAsTextFile(recomTrainFile);
+      tmpRDD.coalesce(1,true).saveAsTextFile(recomTrainFile);
       
       
       /*List<String> test = rankingTrainData_JsonRDD.collect();
