@@ -13,6 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -41,14 +45,31 @@ public class RecomTrainDataGenerator extends DiscoveryStepAbstract {
 
       JavaRDD<String> rankingTrainData_JsonRDD = rankingTrainDataRDD.map(f -> f.toJson());
 
-      JavaRDD<String> tmpRDD = rankingTrainData_JsonRDD.coalesce(1);
+      //JavaRDD<String> tmpRDD = rankingTrainData_JsonRDD.coalesce(1, true);
+      //System.out.print(tmpRDD.count());
+      //tmpRDD.saveAsTextFile(recomTrainFile);
+      List<String> test = rankingTrainData_JsonRDD.collect();
+      File file = new File(recomTrainFile);
+      if (file.exists()) {
+        file.delete();
+      }
+      try {
+        file.createNewFile();
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        
+        for(int i=0; i<test.size(); i++){
+          	 bw.write(test.get(i) + "\n");
+        }
+
+        bw.close();
+
+      } catch (IOException e) {
+        e.printStackTrace();
+
+      }
       
-      System.out.print(tmpRDD.count());
-      tmpRDD.coalesce(1,true).saveAsTextFile(recomTrainFile);
-      
-      
-      /*List<String> test = rankingTrainData_JsonRDD.collect();
-      for(int i=0; i<test.size(); i++){
+ /*     for(int i=0; i<test.size(); i++){
       	System.out.println(test.get(i));
       }*/
 
